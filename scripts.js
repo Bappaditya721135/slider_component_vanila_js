@@ -1,6 +1,7 @@
 const allSlider = document.querySelectorAll(".slider")
 const rightBtn = document.querySelector(".right-btn")
 const leftBtn = document.querySelector(".left-btn")
+const dotBtnParent = document.querySelector(".dot-btns")
 
 // adding translate property to all slider 
 
@@ -66,10 +67,24 @@ const slide = (activeSlide) => {
 }
 
 
+// checking which dot is active 
+const activeDot = (activeElement) => {
+    const activeDot = activeElement + 1;
+    const allDots = document.querySelectorAll(".dot-btn")
+    allDots.forEach(dot => {
+        dot.classList.remove("active-dot-btn")
+    })
+    document.querySelector(`.dot-btn-${activeDot}`).classList.add("active-dot-btn")
+
+}
+
+
+
 // right click 
 rightBtn.addEventListener("click", () => {
     currentSlide++;
     slide(currentSlide)
+    activeDot(currentSlide)
 })
 
 
@@ -77,4 +92,39 @@ rightBtn.addEventListener("click", () => {
 leftBtn.addEventListener("click", () => {
     currentSlide--;
     slide(currentSlide)
+    activeDot(currentSlide)
 })
+
+
+
+// dot btn functionality 
+dotBtnParent.addEventListener("click", (e => {
+    if(!e.target.classList.contains("dot-btn")) return;
+    currentSlide = Number(e.target.dataset.index)
+    slide(currentSlide)
+    activeDot(currentSlide)
+}))
+
+
+// slider arrow button function 
+document.addEventListener("keydown", (e) => {
+    if(e.key === "ArrowRight") {
+        currentSlide++;
+        slide(currentSlide)
+        activeDot(currentSlide)
+    }
+    if(e.key === "ArrowLeft") {
+        currentSlide--;
+        slide(currentSlide)
+        activeDot(currentSlide)
+    }
+})
+
+
+
+// automatic slider functionality 
+setInterval(() => {
+    currentSlide++;
+    slide(currentSlide)
+    activeDot(currentSlide)
+}, 2000)
